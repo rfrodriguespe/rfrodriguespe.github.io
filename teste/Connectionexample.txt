@@ -1,0 +1,11 @@
+private Connection getConnection() {
+    final String url = "https://filenet.routemebackhome.com/wsi/FNCEWS40MTOM/";
+    final Connection connection = Factory.Connection.getConnection(url);
+    final String user = "your username";
+    final String password = "your password";
+    final String stanza = "FileNetP8WSI";
+    final Subject subject = UserContext.createSubject(connection, user, password, stanza);
+    UserContext.get().pushSubject(subject);
+    return connection;
+}
+
