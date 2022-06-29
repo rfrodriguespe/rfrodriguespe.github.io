@@ -1,14 +1,20 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
+
+@page {
+  size: A4 portrait;
+}
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  box-sizing: unset;
   font-family: "Poppins", sans-serif;
+  -webkit-print-color-adjust: exact !important;
+  color-adjust: exact !important;
 }
 
 body {
-  background: lightblue;
-  display: flex;
+  background: white;
+  display: block;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -20,48 +26,40 @@ body {
   max-width: 1000px;
   min-height: 1000px;
   background: #fff;
-  margin: 50px;
+  margin: 0;
   display: grid;
   grid-template-columns: 1fr 2fr;
-  box-shadow: 0 35px 55px rgba(0, 0, 0, 0.1);
 }
 
 .container .left_side {
   position: relative;
-  background: #003147;
-  padding: 40px;
+  background: white;
+  padding: 0;
 }
 
 .profileText {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  display: block;
   align-items: center;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .profileText .imgBx {
+  display: none;
   position: relative;
   width: 200px;
   height: 200px;
-  border-radius: 50%;
   overflow: hidden;
 }
 
 .profileText .imgBx img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  display: none;
 }
 
 .profileText h2 {
-  color: #fff;
+  color: black;
   font-size: 1.5em;
-  margin-top: 20px;
+  margin-top: 0;
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
@@ -78,11 +76,11 @@ body {
 }
 
 .title {
-  color: #fff;
+  color: black;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 1px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 .contactInfo ul {
@@ -97,14 +95,11 @@ body {
 }
 
 .contactInfo ul li .icon {
-  display: inline-block;
-  width: 30px;
-  font-size: 18px;
-  color: #03a9f4;
+  display: none;
 }
 
 .contactInfo ul li span {
-  color: #fff;
+  color: black;
   font-weight: 300;
 }
 
@@ -113,17 +108,17 @@ body {
 }
 
 .contactInfo.education h5 {
-  color: #03a9f4;
+  color: black;
   font-weight: 500;
 }
 
 .contactInfo.education h4:nth-child(2) {
-  color: #fff;
+  color: black;
   font-weight: 500;
 }
 
 .contactInfo.education h4 {
-  color: #fff;
+  color: black;
   font-weight: 300;
 }
 
@@ -131,7 +126,7 @@ body {
   position: relative;
   width: 100%;
   height: 6px;
-  background: #081921;
+  background: #f0f0f0;
   display: block;
   margin-top: 5px;
 }
@@ -141,7 +136,7 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-  background: #03a9f4;
+  background: black;
 }
 
 .container .right_side {
@@ -159,19 +154,18 @@ body {
 }
 
 .title2 {
-  color: #003147;
+  color: black;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 10px;
 }
 
 p {
-  color: #333;
+  color: black;
 }
 
 .about .box {
-  display: flex;
-  flex-direction: row;
+  display: block;
   margin: 20px 0;
 }
 
@@ -181,7 +175,7 @@ p {
 
 .about .box .year_company h5 {
   text-transform: uppercase;
-  color: #848c90;
+  color: black;
   font-weight: 600;
 }
 
@@ -196,7 +190,7 @@ p {
 
 .skills .box h4 {
   text-transform: uppercase;
-  color: #848c99;
+  color: black;
   font-weight: 500;
 }
 
@@ -212,7 +206,7 @@ p {
   top: 0;
   left: 0;
   height: 100%;
-  background: #03a9f4;
+  background: black;
 }
 
 .interest ul {
@@ -222,38 +216,13 @@ p {
 
 .interest ul li {
   list-style: none;
-  color: #333;
+  color: black;
   font-weight: 500;
   margin: 10px 0;
 }
 
 .interest ul li .fa {
-  color: #03a9f4;
+  color: black;
   font-size: 18px;
   width: 20px;
-}
-
-@media (max-width: 1000px) {
-  .container {
-    margin: 10px;
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .interest ul {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .about .box {
-    flex-direction: column;
-  }
-  .about .box .year_company {
-    margin-bottom: 5px;
-  }
-  .interest ul {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .skills .box {
-    grid-template-columns: repeat(1, 1fr);
-  }
 }
