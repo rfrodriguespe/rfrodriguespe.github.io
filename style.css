@@ -29,7 +29,7 @@ body {
 .container .left_side {
   position: relative;
   background: #003147;
-  padding: 40px;
+  padding: 30px;
 }
 
 .profileText {
@@ -213,6 +213,18 @@ p {
   left: 0;
   height: 100%;
   background: #03a9f4;
+}
+
+.courses ul {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.courses ul li {
+  list-style: none;
+  color: #848c99;
+  font-weight: 500;
+  margin: 1px 0;
 }
 
 .interest ul {
