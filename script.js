@@ -159,15 +159,14 @@ function endGame() {
 
 // Adiciona um ouvinte para a tecla "Enter"
 document.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && !gameStarted) {
-        playerName = playerNameInput.value.trim();
-        if (playerName === "") {
-            alert("Por favor, insira seu nome antes de começar!");
-            return;
-        }
-        document.getElementById("startScreen").style.display = "none";
-        document.getElementById("gameArea").style.display = "block";
-        startGame();
-    }
-});
+     if (event.key === "ArrowLeft" && marcilioPosition > 0) {
+         marcilioPosition -= moveAmount;
+     } else if (event.key === "ArrowRight" && marcilioPosition < gameArea.clientWidth - marcilio.clientWidth) {
+         marcilioPosition += moveAmount;
+     } else if (event.key === "Enter" && !gameStarted) {
+         gameStarted = true; // Inicia o jogo
+         startGame();
+     }
+     marcilio.style.left = marcilioPosition + "px";
+ });
 
