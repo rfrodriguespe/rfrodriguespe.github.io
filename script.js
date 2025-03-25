@@ -55,12 +55,13 @@ document.addEventListener("touchend", () => {
 });
 
 function startGame() {
-    gameStarted = true;
+    gameStarted = true; // Atualiza o estado do jogo
     score = 0;
     lives = 3;
-    updateDisplay();
-    setInterval(spawnFallingObject, 1000);
+    updateDisplay(); // Reinicia os valores de pontuação e vida
+    setInterval(spawnFallingObject, 1000); // Gera objetos caindo
 }
+
 
 function updateDisplay() {
     scoreDisplay.innerText = `Score: ${score}`;
@@ -129,3 +130,11 @@ function resetGame() {
     fallingIntervals.forEach(interval => clearInterval(interval));
     fallingIntervals = [];
 }
+
+// Adiciona toque no "marcilio" para iniciar o jogo em dispositivos móveis
+marcilio.addEventListener("touchstart", () => {
+    if (!gameStarted) {
+        startGame(); // Inicia o jogo
+    }
+});
+
