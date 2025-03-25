@@ -35,5 +35,32 @@ body {
     font-size: 1.2rem;
     margin: 10px;
     position: absolute;
-    top: 10px;
 }
+
+#score {
+    top: 10px;
+    left: 10px; /* Posiciona no canto superior esquerdo */
+}
+
+#lives {
+    top: 10px;
+    right: 10px; /* Posiciona no canto superior direito */
+}
+
+@media (max-width: 600px) {
+    #score, #lives {
+        font-size: 1rem; /* Reduz um pouco o tamanho da fonte */
+        margin: 5px;
+    }
+
+    #score {
+        top: 5px;
+        left: 5px; /* Ajusta para melhor visibilidade */
+    }
+
+    #lives {
+        top: 5px;
+        right: 5px; /* Ajusta para melhor visibilidade */
+    }
+}
+
