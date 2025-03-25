@@ -156,3 +156,18 @@ function endGame() {
     document.getElementById("yesButton").onclick = () => document.location.reload();
     document.getElementById("noButton").onclick = () => window.close();
 }
+
+// Adiciona um ouvinte para a tecla "Enter"
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !gameStarted) {
+        playerName = playerNameInput.value.trim();
+        if (playerName === "") {
+            alert("Por favor, insira seu nome antes de começar!");
+            return;
+        }
+        document.getElementById("startScreen").style.display = "none";
+        document.getElementById("gameArea").style.display = "block";
+        startGame();
+    }
+});
+
