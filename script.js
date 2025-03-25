@@ -1,18 +1,21 @@
 const marcilio = document.getElementById("marcilio");
 const gameArea = document.getElementById("gameArea");
 const scoreDisplay = document.getElementById("score");
+const levelDisplay = document.getElementById("level");
 const livesDisplay = document.getElementById("lives");
 
-const soundLoseLife = new Audio("ui.ogg"); // Som ao perder vida
-const soundGainPoint = new Audio("eca.ogg"); // Som ao ganhar ponto
+const soundLoseLife = new Audio("ui.ogg");
+const soundGainPoint = new Audio("eca.ogg");
 
 let score = 0;
 let lives = 3;
-let marcilioPosition = gameArea.clientWidth / 2 - 50; // Posição inicial
-const moveAmount = 15; // Quantidade que Marcilio se move
-const fallingObjects = ["xavasca.png", "cool.png"]; // Imagens que vão cair
+let level = 1;
+let fallSpeed = 5; // Velocidade inicial das peças caindo
+let marcilioPosition = gameArea.clientWidth / 2 - 50;
+const moveAmount = 15;
+const fallingObjects = ["xavasca.png", "cool.png"];
 let gameStarted = false;
-let fallingIntervals = []; // Array para armazenar os intervalos dos objetos em queda
+let fallingIntervals = [];
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "ArrowLeft" && marcilioPosition > 0) {
@@ -25,7 +28,7 @@ document.addEventListener("keydown", (event) => {
     marcilio.style.left = marcilioPosition + "px";
 });
 
-// Habilita toque no "marcilio" para iniciar o jogo
+// Toque no "marcilio" para iniciar o jogo
 marcilio.addEventListener("touchstart", () => {
     if (!gameStarted) {
         startGame();
@@ -55,16 +58,18 @@ document.addEventListener("touchend", () => {
 });
 
 function startGame() {
-    gameStarted = true; // Atualiza o estado do jogo
+    gameStarted = true;
     score = 0;
     lives = 3;
-    updateDisplay(); // Reinicia os valores de pontuação e vida
-    setInterval(spawnFallingObject, 1000); // Gera objetos caindo
+    level = 1;
+    fallSpeed = 5;
+    updateDisplay();
+    setInterval(spawnFallingObject, 1000);
 }
-
 
 function updateDisplay() {
     scoreDisplay.innerText = `Score: ${score}`;
+    levelDisplay.innerText = `Level: ${level}`;
     livesDisplay.innerText = `Lives: ${lives}`;
 }
 
@@ -79,7 +84,7 @@ function spawnFallingObject() {
 
     let fallInterval = setInterval(() => {
         let objectPosition = parseFloat(object.style.top) || 0;
-        objectPosition += 5;
+        objectPosition += fallSpeed;
 
         object.style.top = objectPosition + "px";
 
@@ -90,6 +95,7 @@ function spawnFallingObject() {
             } else if (object.src.includes("cool.png")) {
                 score += 100;
                 soundGainPoint.play();
+                checkLevelUp();
             }
             updateDisplay();
             clearInterval(fallInterval);
@@ -115,8 +121,16 @@ function checkCollision(object, marcilio) {
     );
 }
 
+function checkLevelUp() {
+    if (score >= level * 300) {
+        level++;
+        fallSpeed += 2;
+        levelDisplay.innerText = `Level: ${level}`;
+    }
+}
+
 function endGame() {
-    window.alert("Você perdeu!");
+    window.alert(`Você perdeu! Sua pontuação foi: ${score}, no nível: ${level}`);
     resetGame();
 }
 
@@ -124,6 +138,8 @@ function resetGame() {
     gameStarted = false;
     score = 0;
     lives = 3;
+    level = 1;
+    fallSpeed = 5;
     updateDisplay();
     const fallingObjects = document.querySelectorAll(".falling");
     fallingObjects.forEach((object) => object.remove());
@@ -131,10 +147,22 @@ function resetGame() {
     fallingIntervals = [];
 }
 
-// Adiciona toque no "marcilio" para iniciar o jogo em dispositivos móveis
-marcilio.addEventListener("touchstart", () => {
-    if (!gameStarted) {
-        startGame(); // Inicia o jogo
-    }
-});
 
+function checkLevelUp() {
+    if (score >= level * 500) {
+        level++;
+        if (level === 6) {
+            endWinningGame(); // Chama a função de fim de jogo para nível 6
+        } else {
+            fallSpeed += 2; // Aumenta a velocidade das peças caindo
+            levelDisplay.innerText = `Level: ${level}`; // Atualiza o nível na tela
+        }
+    }
+}
+
+// Função para encerrar o jogo no nível 6
+function endWinningGame() {
+    gameStarted = false; // Para o jogo
+    window.alert("Parabéns, você é um papa rosquinha!"); // Mensagem final
+    resetGame(); // Reinicia o jogo para o estado inicial
+}
