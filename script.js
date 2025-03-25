@@ -89,27 +89,34 @@ function spawnFallingObject() {
         object.style.top = objectPosition + "px";
 
         if (checkCollision(object, marcilio)) {
+            clearInterval(fallInterval); // Para o intervalo de queda
+
             if (object.src.includes("xavasca.png")) {
+                // Comportamento exclusivo para xavasca.png
                 lives--;
-                soundLoseLife.play();
+                soundLoseLife.play(); // Toca som ao perder vida
+                object.remove(); // Remove imediatamente o objeto
+
             } else if (object.src.includes("cool.png")) {
+                // Comportamento exclusivo para cool.png
                 score += 100;
-                soundGainPoint.play();
+                soundGainPoint.play(); // Toca som ao ganhar ponto
 
                 // Troca a imagem para a versão "em chamas"
                 object.src = "burning-donut.png";
 
-                // Aguarda o término do efeito visual para remover o objeto
+                // Aguarda o efeito antes de remover
                 setTimeout(() => {
                     object.remove();
-                }, 1000); // 1 segundo para exibir o efeito
-
-                checkLevelUp(); // Verifica se o jogador subiu de nível
+                }, 1000); // Remove após 1 segundo
+                checkLevelUp(); // Verifica mudança de nível
             }
-            updateDisplay();
-            clearInterval(fallInterval);
-            if (lives <= 0) endGame();
+
+            updateDisplay(); // Atualiza o placar e as vidas
+            if (lives <= 0) endGame(); // Finaliza o jogo se vidas acabarem
+
         } else if (objectPosition > gameArea.clientHeight) {
+            // Remove objetos que saem da tela
             clearInterval(fallInterval);
             object.remove();
         }
@@ -117,6 +124,7 @@ function spawnFallingObject() {
 
     fallingIntervals.push(fallInterval);
 }
+
 
 
 
