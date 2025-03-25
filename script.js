@@ -1,49 +1,39 @@
-const startButton = document.getElementById("startButton");
-const playerNameInput = document.getElementById("playerName");
-let playerName = "";
 
-const marcilio = document.getElementById("marcilio");
-const gameArea = document.getElementById("gameArea");
-const scoreDisplay = document.getElementById("score");
-const livesDisplay = document.getElementById("lives");
 
 // Adiciona os arquivos de som
 const soundLoseLife = new Audio("ui.ogg"); // Som ao perder vida
 const soundGainPoint = new Audio("eca.ogg"); // Som ao ganhar ponto
 
-let score = 0;
-let lives = 3;
-let marcilioPosition = 175; // Posição inicial do Marcilio
-const moveAmount = 15; // Quantidade que Marcilio se move
-const fallingObjects = ["xavasca.png", "cool.png"]; // Imagens que vão cair
-let gameStarted = false; // Controle de estado do jogo
-
-startButton.addEventListener("click", () => {
-    playerName = playerNameInput.value.trim();
-    if (playerName === "") {
-        alert("Por favor, insira seu nome antes de começar!");
-        return;
-    }
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("gameArea").style.display = "block";
-    startGame();
-});
-
-document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft" && marcilioPosition > 0) {
-        marcilioPosition -= moveAmount;
-    } else if (event.key === "ArrowRight" && marcilioPosition < gameArea.clientWidth - marcilio.clientWidth) {
-        marcilioPosition += moveAmount;
-    }
-    marcilio.style.left = marcilioPosition + "px";
-});
-
-function startGame() {
-    gameStarted = true;
-    setInterval(spawnFallingObject, 1000); // Gera um novo objeto a cada segundo
-}
-
-// Ajuste na lógica de colisão
+ const marcilio = document.getElementById("marcilio");
+ const gameArea = document.getElementById("gameArea");
+ const scoreDisplay = document.getElementById("score");
+ const livesDisplay = document.getElementById("lives");
+ 
+ let score = 0;
+ let lives = 3;
+ let marcilioPosition = 175; // Posição inicial do Marcilio
+ const moveAmount = 15; // Quantidade que Marcilio se move
+ const fallingObjects = ["xavasca.png", "cool.png"]; // Imagens que vão cair
+ let gameStarted = false; // Controle de estado do jogo
+ 
+ document.addEventListener("keydown", (event) => {
+     if (event.key === "ArrowLeft" && marcilioPosition > 0) {
+         marcilioPosition -= moveAmount;
+     } else if (event.key === "ArrowRight" && marcilioPosition < gameArea.clientWidth - marcilio.clientWidth) {
+         marcilioPosition += moveAmount;
+     } else if (event.key === "Enter" && !gameStarted) {
+         gameStarted = true; // Inicia o jogo
+         startGame();
+     }
+     marcilio.style.left = marcilioPosition + "px";
+ });
+ 
+ // Função para iniciar o jogo
+ function startGame() {
+     setInterval(spawnFallingObject, 1000); // Gera um novo objeto a cada segundo
+ }
+ 
+ // Ajuste na lógica de colisão
 let fallingIntervals = []; // Array para armazenar os intervalos dos objetos em queda
 
 function spawnFallingObject() {
@@ -71,6 +61,7 @@ function spawnFallingObject() {
                 soundGainPoint.play(); // Toca som ao ganhar pontos
                 scoreDisplay.innerText = "Score: " + score;
                 shakeMarcilio(); // Pausa queda e executa tremor
+				if (lives <= 0) endGame(); // Finaliza o jogo se as vidas chegarem a zero
             }
             clearInterval(fallInterval);
             object.remove();
@@ -136,37 +127,62 @@ function shakeMarcilio() {
     }, 500); // Dura 500ms
 }
 
-function saveScore() {
-    const data = { name: playerName, score: score };
-    fetch("saveScore.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.error("Erro ao salvar pontuação:", error));
-}
-
 function endGame() {
-    saveScore();
-    document.getElementById("finalScore").innerText = score;
-    document.getElementById("endGamePopup").style.display = "flex";
+    // Exibe a mensagem de perda
+    window.alert("Você perdeu!");
 
-    document.getElementById("yesButton").onclick = () => document.location.reload();
-    document.getElementById("noButton").onclick = () => window.close();
+    // Reseta o estado do jogo
+    resetGame();
 }
 
-// Adiciona um ouvinte para a tecla "Enter"
-document.addEventListener("keydown", (event) => {
-     if (event.key === "ArrowLeft" && marcilioPosition > 0) {
-         marcilioPosition -= moveAmount;
-     } else if (event.key === "ArrowRight" && marcilioPosition < gameArea.clientWidth - marcilio.clientWidth) {
-         marcilioPosition += moveAmount;
-     } else if (event.key === "Enter" && !gameStarted) {
-         gameStarted = true; // Inicia o jogo
-         startGame();
-     }
-     marcilio.style.left = marcilioPosition + "px";
- });
+// Função para resetar o jogo
+function resetGame() {
+    // Reinicia as variáveis principais
+    score = 0;
+    lives = 3;
+    marcilioPosition = 175;
+    gameStarted = false;
+
+    // Atualiza a exibição na tela
+    scoreDisplay.innerText = "Score: 0";
+    livesDisplay.innerText = "Lives: 3";
+    marcilio.style.left = marcilioPosition + "px";
+
+    // Remove todos os objetos em queda
+    const fallingObjects = document.querySelectorAll(".falling");
+    fallingObjects.forEach((object) => object.remove());
+
+    // Limpa os intervalos ativos
+    fallingIntervals.forEach(interval => clearInterval(interval));
+    fallingIntervals = [];
+}
+
+// Habilita toque no "marcilio" para iniciar o jogo
+marcilio.addEventListener("touchstart", () => {
+    if (!gameStarted) {
+        startGame();
+    }
+});
+
+// Adiciona movimentação ao arrastar na tela
+let isDragging = false;
+
+marcilio.addEventListener("touchstart", (event) => {
+    isDragging = true;
+});
+
+document.addEventListener("touchmove", (event) => {
+    if (isDragging) {
+        const touch = event.touches[0];
+        const touchX = touch.clientX - gameArea.offsetLeft;
+        if (touchX >= 0 && touchX <= gameArea.clientWidth - marcilio.clientWidth) {
+            marcilioPosition = touchX;
+            marcilio.style.left = marcilioPosition + "px";
+        }
+    }
+});
+
+document.addEventListener("touchend", () => {
+    isDragging = false;
+});
 
