@@ -76,3 +76,24 @@ body {
     width: 10%;
     position: absolute;
 }
+
+@keyframes burnEffect {
+    0% {
+        filter: brightness(100%);
+        transform: scale(1);
+    }
+    50% {
+        filter: brightness(200%);
+        transform: scale(1.1);
+    }
+    100% {
+        filter: brightness(50%);
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.burn {
+    animation: burnEffect 1s forwards; /* Efeito dura 1 segundo e desaparece */
+}
+

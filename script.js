@@ -95,11 +95,19 @@ function spawnFallingObject() {
             } else if (object.src.includes("cool.png")) {
                 score += 100;
                 soundGainPoint.play();
-                checkLevelUp();
+
+                // Troca a imagem para a versão "em chamas"
+                object.src = "burning-donut.png";
+
+                // Aguarda o término do efeito visual para remover o objeto
+                setTimeout(() => {
+                    object.remove();
+                }, 1000); // 1 segundo para exibir o efeito
+
+                checkLevelUp(); // Verifica se o jogador subiu de nível
             }
             updateDisplay();
             clearInterval(fallInterval);
-            object.remove();
             if (lives <= 0) endGame();
         } else if (objectPosition > gameArea.clientHeight) {
             clearInterval(fallInterval);
@@ -109,6 +117,8 @@ function spawnFallingObject() {
 
     fallingIntervals.push(fallInterval);
 }
+
+
 
 function checkCollision(object, marcilio) {
     const objectRect = object.getBoundingClientRect();
