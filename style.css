@@ -9,58 +9,70 @@ body {
 
 #gameArea {
     position: relative;
-    width: 90%; /* Ajuste para dispositivos móveis */
-    max-width: 400px; /* Tamanho máximo */
-    height: 80vh; /* Altura proporcional */
+    width: 90%;
+    max-width: 400px;
+    height: 80vh;
     overflow: hidden;
     border: 2px solid #000;
     background-color: #fff;
 }
 
-#marcilio {
-    width: 12%; /* Ajusta o tamanho proporcionalmente */
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    touch-action: none; /* Impede o comportamento padrão de toque */
-}
-
-.falling {
-    width: 10%; /* Ajusta o tamanho dos objetos */
-    position: absolute;
-}
-
-#score, #lives {
+#score, #lives, #level {
     font-size: 1.2rem;
-    margin: 10px;
     position: absolute;
 }
 
 #score {
     top: 10px;
-    left: 10px; /* Posiciona no canto superior esquerdo */
+    left: 10px;
+}
+
+#level {
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
 }
 
 #lives {
     top: 10px;
-    right: 10px; /* Posiciona no canto superior direito */
+    right: 10px;
 }
 
+/* Responsividade para dispositivos móveis */
 @media (max-width: 600px) {
-    #score, #lives {
-        font-size: 1rem; /* Reduz um pouco o tamanho da fonte */
+    #score, #lives, #level {
+        font-size: 1rem;
         margin: 5px;
     }
 
     #score {
         top: 5px;
-        left: 5px; /* Ajusta para melhor visibilidade */
+        left: 5px;
+    }
+
+    #level {
+        top: 5px;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #lives {
         top: 5px;
-        right: 5px; /* Ajusta para melhor visibilidade */
+        right: 5px;
     }
 }
 
+#marcilio {
+    width: 12%;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    touch-action: none;
+}
+
+.falling {
+    width: 10%;
+    position: absolute;
+}
